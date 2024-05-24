@@ -1,0 +1,28 @@
+version: '3.4'
+
+networks:
+  se171223.productmanagement.api:
+
+services:
+  se171223.productmanagement.api:
+    image: ${DOCKER_REGISTRY-}se171223productmanagementapi
+    build:
+      context: .
+      dockerfile: SE171223.ProductManagement.API/Dockerfile
+    ports:
+        - 8001:80
+    depends_on: 
+        - lab01db
+    networks:
+        - se171223.productmanagement.api
+
+  lab01db:
+    container_name: lab01-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+        - 8002:1433
+    environment:
+        - ACCEPT_EULA=Y
+        - MSSQL_SA_PASSWORD=Hao123456@
+    networks:
+        - se171223.productmanagement.api
